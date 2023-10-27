@@ -27,6 +27,8 @@ class ReminderModel{
   String? startDate;
   String? id;
 
+  ReminderModel(this.name, this.description, this.startDate);
+
   ReminderModel.fromJson(Map<String, dynamic> json){
     _id = json['_id'];
     name = json['name'];

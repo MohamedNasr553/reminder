@@ -1,15 +1,16 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder/layout/reminder_app/reminder_layout.dart';
-import 'package:reminder/modules/reminder_app/new_tasks/new_tasks.dart';
+import 'package:reminder/models/reminder_model.dart';
 import 'package:reminder/shared/components/components.dart';
 import 'package:reminder/shared/cubit/cubit.dart';
 import 'package:reminder/shared/cubit/states.dart';
 
-
-class AddTasks extends StatelessWidget {
-  AddTasks({super.key});
+class UpdateTask extends StatelessWidget {
+  ReminderModel? model;
+  UpdateTask({super.key});
 
   var nameController = TextEditingController();
   var descriptionController = TextEditingController();
@@ -19,8 +20,13 @@ class AddTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ReminderCubit, ReminderStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
+      listener: (context, state){},
+      builder: (context, state){
+        var model = ReminderCubit.get(context).updateEventsReminderModel;
+
+        nameController.text = model!.name!;
+        descriptionController.text = model.description!;
+        startDateController.text = model.startDate!;
         return Scaffold(
           appBar: AppBar(),
           body: SingleChildScrollView(
@@ -32,8 +38,8 @@ class AddTasks extends StatelessWidget {
                   defaultFormField(
                     controller: nameController,
                     type: TextInputType.text,
-                    validate: (value) {
-                      if (value!.isEmpty) {
+                    validate: (value){
+                      if(value!.isEmpty){
                         return "Name must not be empty";
                       }
                       return null;
@@ -47,7 +53,7 @@ class AddTasks extends StatelessWidget {
                   defaultFormField(
                     controller: descriptionController,
                     type: TextInputType.text,
-                    validate: (value) {},
+                    validate: (value){},
                     label: "Event Description (optional)",
                     prefix: Icons.menu,
                   ),
@@ -57,21 +63,20 @@ class AddTasks extends StatelessWidget {
                   defaultFormField(
                     controller: startDateController,
                     type: TextInputType.datetime,
-                    validate: (value) {
-                      if (value!.isEmpty) {
+                    validate: (value){
+                      if(value!.isEmpty){
                         return "Date must not be empty";
                       }
                       return null;
                     },
-                    onTap: () {
+                    onTap: (){
                       showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime.now(),
                           lastDate: DateTime.parse("2025-05-03")
                       ).then((value) {
-                        startDateController.text =
-                            DateFormat.yMMMd().format(value!);
+                        startDateController.text = DateFormat.yMMMd().format(value!);
 
                         print(DateFormat.yMMMd().format(value));
                       });
@@ -83,17 +88,18 @@ class AddTasks extends StatelessWidget {
                     height: 10.0,
                   ),
                   defaultButton(
+                    radius: 5.0,
                     width: 200.0,
-                    function: () {
-                      if (formKey.currentState!.validate()) {
-                        ReminderCubit.get(context).addEvents(
+                    function: (){
+                      if(formKey.currentState!.validate()){
+                        ReminderCubit.get(context).updateEvents(
                           name: nameController.text,
                           description: descriptionController.text,
                           startDate: startDateController.text,
                         );
                         navigateAndFinish(context, const ReminderLayout());
                       }
-                    }, text: 'Add Event',
+                    }, text: 'UPDATE',
                   ),
                 ],
               ),
@@ -104,4 +110,3 @@ class AddTasks extends StatelessWidget {
     );
   }
 }
-

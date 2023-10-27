@@ -38,7 +38,6 @@ class ReminderCubit extends Cubit<ReminderStates>{
   }
 
   ReminderAppModel? reminderAppModel;
-
   void getAllEvents(){
     emit(ReminderGetEventsLoadingState());
 
@@ -56,10 +55,11 @@ class ReminderCubit extends Cubit<ReminderStates>{
     });
   }
 
+  ReminderModel? addEventsReminderModel;
   void addEvents({
     required String name,
     required String description,
-    required String startDate,
+    required var startDate,
 }){
     emit(ReminderAddEventsLoadingState());
 
@@ -71,13 +71,41 @@ class ReminderCubit extends Cubit<ReminderStates>{
         'startDate' : startDate,
       },
     ).then((value){
-      reminderAppModel = ReminderAppModel.fromJson(value.data);
+      addEventsReminderModel = ReminderModel.fromJson(value.data);
+      getAllEvents();
 
       emit(ReminderAddEventsSuccessState());
     }).catchError((error){
       print(error.toString());
 
       emit(ReminderAddEventsErrorState(error.toString()));
+    });
+  }
+
+  ReminderModel? updateEventsReminderModel;
+  void updateEvents({
+    required String name,
+    required String description,
+    required var startDate,
+  }){
+    emit(ReminderUpdateEventsLoadingState());
+
+    DioHelper.patchData(
+      url: UPDATE_EVENT,
+      data: {
+        'name' : name,
+        'description' : description,
+        'startDate' : startDate,
+      },
+    ).then((value){
+      updateEventsReminderModel = ReminderModel.fromJson(value.data);
+      getAllEvents();
+
+      emit(ReminderUpdateEventsSuccessState());
+    }).catchError((error){
+      print(error.toString());
+
+      emit(ReminderUpdateEventsErrorState(error.toString()));
     });
   }
 }

@@ -2,6 +2,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder/models/reminder_model.dart';
+import 'package:reminder/modules/reminder_app/update_task/update_task.dart';
+import 'package:reminder/shared/components/components.dart';
 import 'package:reminder/shared/cubit/cubit.dart';
 import 'package:reminder/shared/cubit/states.dart';
 
@@ -22,7 +24,7 @@ class NewTasks extends StatelessWidget {
     );
   }
 
-  Widget newTasksBuilderItem(ReminderModel? model)
+  Widget newTasksBuilderItem(ReminderModel? model, context)
     =>
         Padding(
           padding: const EdgeInsets.all(15.0),
@@ -87,7 +89,9 @@ class NewTasks extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     radius: 20.0,
                     child: IconButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        navigateTo(context, UpdateTask());
+                      },
                       icon: const Icon(
                         Icons.edit,
                       ),
@@ -115,7 +119,7 @@ class NewTasks extends StatelessWidget {
   ListView getAllTasks(ReminderAppModel? model)
     =>
         ListView.separated(
-            itemBuilder: (context, index) => newTasksBuilderItem(model.data!.reminderData[index]),
+            itemBuilder: (context, index) => newTasksBuilderItem(model.data!.reminderData[index], context),
             separatorBuilder: (context, index) => const SizedBox(width: double.infinity, height: 1.0,),
             itemCount: model!.results!,
         );

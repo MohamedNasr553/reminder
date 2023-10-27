@@ -35,13 +35,13 @@ class ReminderLayout extends StatelessWidget {
             ],
           ),
           body: reminderCubit.screens[reminderCubit.currentIndex],
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.extended(
             onPressed: (){
-              navigateTo(context, AddTasks());
+              navigateAndFinish(context, AddTasks());
             },
-            child: const Icon(
-              Icons.add,
-            )
+            label: const Text(
+              'Add Task',
+            ),
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: reminderCubit.currentIndex,

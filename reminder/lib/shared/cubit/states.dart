@@ -1,3 +1,5 @@
+import 'package:reminder/models/reminder_model.dart';
+
 abstract class ReminderStates{}
 
 class ReminderInitialState extends ReminderStates{}
@@ -24,4 +26,14 @@ class ReminderAddEventsErrorState extends ReminderStates{
   final String error;
 
   ReminderAddEventsErrorState(this.error);
+}
+
+class ReminderUpdateEventsLoadingState extends ReminderStates{}
+
+class ReminderUpdateEventsSuccessState extends ReminderStates{}
+
+class ReminderUpdateEventsErrorState extends ReminderStates{
+  final String error;
+
+  ReminderUpdateEventsErrorState(this.error);
 }

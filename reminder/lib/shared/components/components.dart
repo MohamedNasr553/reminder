@@ -22,7 +22,7 @@ Widget defaultButton({
         child: Text(
           "${isUpperCase?text.toUpperCase():text.toLowerCase()}",
           style: const TextStyle(
-              color: Colors.white
+              color: Colors.white,
           ),
         ),
       ),
@@ -62,14 +62,18 @@ Widget defaultFormField({
     );
 
 
-void navigateTo(context,widget) => Navigator.push(
+void navigateTo(context,widget)
+  =>
+      Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) =>widget
     )
 );
 
-void navigateAndFinish(context,widget) => Navigator.pushAndRemoveUntil(
+void navigateAndFinish(context,widget)
+  =>
+      Navigator.pushAndRemoveUntil(
   context,
   MaterialPageRoute(
       builder: (context) =>widget
